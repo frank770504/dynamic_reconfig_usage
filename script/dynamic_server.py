@@ -12,6 +12,8 @@ def callback(config):
 
 def dynamic_update(req):
     print "node_name:{}, config_name:{}, new_cnofig:{}".format(req.node_name, req.config_name, req.new_cnofig)
+    client = dynamic_reconfigure.client.Client(req.node_name, timeout=30, config_callback=callback)
+    client.update_configuration({ req.config_name : float(req.new_cnofig)})
     return "ok"
 
 def server_test():
