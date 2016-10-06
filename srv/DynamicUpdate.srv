@@ -1,5 +1,6 @@
 string node_name
 string config_name
+string config_type
 string new_cnofig
 ---
 string result
