@@ -1,3 +1,9 @@
+### Execute the service pythomm first
+
+```bash
+roslaunch dynamic_reconfig dynamic_server.py
+```
+
 ### Bash testing command
 
  - test service only
