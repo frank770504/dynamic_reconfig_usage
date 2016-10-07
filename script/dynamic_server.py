@@ -5,7 +5,7 @@ import rospy
 import dynamic_reconfigure.client
 from dynamic_reconfig.srv import *
 
-_name = "/move_base/global_costmap/inflation_layer"
+dynamic_update_service_name = 'DynamicUpdate'
 
 class type_definition:
   TYPE_INT = "int"
@@ -53,7 +53,7 @@ def dynamic_update(req):
 
 def server_test():
     rospy.init_node('dynamic_reconfig')
-    s = rospy.Service('DynamicUpdate', DynamicUpdate, dynamic_update)
+    s = rospy.Service(dynamic_update_service_name, DynamicUpdate, dynamic_update)
     print "Ready to do dynamic_update."
     rospy.spin()
 
