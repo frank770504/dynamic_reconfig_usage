@@ -102,8 +102,8 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES dynamic_reconfig
+  INCLUDE_DIRS include
+  LIBRARIES dynamic_reconfig_common_lib
 #  CATKIN_DEPENDS dynamic_reconfigure roscpp roslib rospy rostopic
 #  DEPENDS system_lib
 )
@@ -116,30 +116,32 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+  include/dynamic_reconfig
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(dynamic_reconfig
-#   src/${PROJECT_NAME}/dynamic_reconfig.cpp
-# )
+add_library(dynamic_reconfig_common_lib
+  src/dynamic_reconfig_common.cpp
+)
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
 ## either from message generation or dynamic reconfigure
-# add_dependencies(dynamic_reconfig ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
+add_dependencies(dynamic_reconfig_common_lib dynamic_reconfig_gencpp)
 
 ## Declare a C++ executable
-# add_executable(dynamic_reconfig_node src/dynamic_reconfig_node.cpp)
+add_executable(dynamic_reconfig_client_test_node src/dynamic_reconfig_client_test.cpp)
 
 ## Add cmake target dependencies of the executable
 ## same as for the library above
 # add_dependencies(dynamic_reconfig_node ${${PROJECT_NAME}_EXPORTED_TARGETS} ${catkin_EXPORTED_TARGETS})
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(dynamic_reconfig_node
-#   ${catkin_LIBRARIES}
-# )
+target_link_libraries(dynamic_reconfig_client_test_node
+   ${catkin_LIBRARIES}
+   dynamic_reconfig_common_lib
+)
 
 #############
 ## Install ##
@@ -148,33 +150,14 @@ include_directories(
 # all install targets should use catkin DESTINATION variables
 # See http://ros.org/doc/api/catkin/html/adv_user_guide/variables.html
 
-## Mark executable scripts (Python etc.) for installation
-## in contrast to setup.py, you can choose the destination
-# install(PROGRAMS
-#   scripts/my_python_script
-#   DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
+install(TARGETS dynamic_reconfig_common_lib
+  LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
+)
 
-## Mark executables and/or libraries for installation
-# install(TARGETS dynamic_reconfig dynamic_reconfig_node
-#   ARCHIVE DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   LIBRARY DESTINATION ${CATKIN_PACKAGE_LIB_DESTINATION}
-#   RUNTIME DESTINATION ${CATKIN_PACKAGE_BIN_DESTINATION}
-# )
-
-## Mark cpp header files for installation
-# install(DIRECTORY include/${PROJECT_NAME}/
-#   DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
-#   FILES_MATCHING PATTERN "*.h"
-#   PATTERN ".svn" EXCLUDE
-# )
-
-## Mark other files for installation (e.g. launch and bag files, etc.)
-# install(FILES
-#   # myfile1
-#   # myfile2
-#   DESTINATION ${CATKIN_PACKAGE_SHARE_DESTINATION}
-# )
+install(DIRECTORY include/${PROJECT_NAME}/
+  DESTINATION ${CATKIN_PACKAGE_INCLUDE_DESTINATION}
+  FILES_MATCHING PATTERN "*.h"
+  PATTERN ".svn" EXCLUDE)
 
 #############
 ## Testing ##
