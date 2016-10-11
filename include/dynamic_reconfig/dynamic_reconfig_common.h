@@ -13,6 +13,7 @@ const std::string DynamicUpdateTypeInt = "int";
 const std::string DynamicUpdateTypeDouble = "double";
 const std::string DynamicUpdateTypeFloat = "float";
 const std::string DynamicUpdateTypeString = "string";
+const std::string DynamicUpdateTypeBool = "bool";
 
 template <class Server>
 class BaseServiceClient {

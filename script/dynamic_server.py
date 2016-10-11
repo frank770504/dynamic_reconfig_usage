@@ -12,6 +12,7 @@ class type_definition:
   TYPE_FLOAT = "float"
   TYPE_DOUBLE = "double"
   TYPE_STRING = "string"
+  TYPE_BOOL = "bool"
 
 class type_converter(type_definition):
     def __init__(self, _type):
@@ -30,6 +31,9 @@ class type_converter(type_definition):
         if self.type_name_ == self.TYPE_STRING:
             self.callback_ = self.convert_to_string_
             return
+        if self.type_name_ == self.TYPE_BOOL:
+            self.callback_ = self.convert_to_bool_
+            return
     def convert_to_int_(self, _string):
         return int(_string)
     def convert_to_float_(self, _string):
@@ -38,6 +42,13 @@ class type_converter(type_definition):
         return float(_string)
     def convert_to_string_(self, _string):
         return _string
+    def convert_to_bool_(self, _string):
+        if _string == "True" or _string == "true":
+            return True
+        elif _string == "False" or _string == "false":
+            return False
+        else:
+            return bool(int(_string))
     def convert_(self, _string):
         return self.callback_(_string)
 

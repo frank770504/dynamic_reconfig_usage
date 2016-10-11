@@ -23,6 +23,18 @@ int main(int argc, char **argv) {
     bool rtn = DUSC.ConfigUpdate(NodeName, ConfigName,
       dynamic_reconfig_common::DynamicUpdateTypeFloat, str_number);
     ROS_INFO_STREAM("result: " << rtn);
+  } else if (atoi(argv[1]) == 2) {
+    // example: this shows how to use this api to call the dynamic reconfig service
+    // When the type is bool, it is okay to send "True", "true", "False", "false",
+    // or "0", "1".
+    const std::string NodeName = "/move_base/global_costmap/inflation_layer/";
+    const std::string ConfigName = "enabled";
+    std::stringstream ss;
+    ss << argv[2];
+    std::string str_number = ss.str();
+    bool rtn = DUSC.ConfigUpdate(NodeName, ConfigName,
+      dynamic_reconfig_common::DynamicUpdateTypeBool, str_number);
+    ROS_INFO_STREAM("result: " << rtn);
   }
   return 0;
 }
