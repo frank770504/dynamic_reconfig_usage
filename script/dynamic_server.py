@@ -52,25 +52,34 @@ class type_converter(type_definition):
     def convert_(self, _string):
         return self.callback_(_string)
 
-def callback(config):
-    rospy.loginfo("Config set to {inflation_radius}, {cost_scaling_factor}, {enabled}".format(**config))
+class dynamic_update_server:
+    def __init__(self):
+        s = rospy.Service(dynamic_update_service_name, DynamicUpdate, self.dynamic_update)
+        self.req_config_name_ = "Null"
+        self.req_node_name_ = "Null"
+        print "Ready to do dynamic_update."
+    def callback(self, config):
+        for key, value in config.iteritems():
+            if key == self.req_config_name_:
+                rospy.loginfo( "{}{} : {}".format(self.req_node_name_, key, value) )
+        #~ rospy.loginfo("Config set to {inflation_radius}, {cost_scaling_factor}, {enabled}".format(**config))
+    def dynamic_update(self, req):
+        print "node_name:{}, config_name:{}, new_config:{}".format(req.node_name, req.config_name, req.new_config)
+        client = dynamic_reconfigure.client.Client(req.node_name, timeout=30, config_callback=self.callback)
+        self.req_node_name_ = req.node_name
+        self.req_config_name_ = req.config_name
+        tc = type_converter(req.config_type)
+        client.update_configuration({ req.config_name : tc.convert_(req.new_config)})
+        return "ok"
 
-def dynamic_update(req):
-    print "node_name:{}, config_name:{}, new_config:{}".format(req.node_name, req.config_name, req.new_config)
-    client = dynamic_reconfigure.client.Client(req.node_name, timeout=30, config_callback=callback)
-    tc = type_converter(req.config_type)
-    client.update_configuration({ req.config_name : tc.convert_(req.new_config)})
-    return "ok"
-
-def server_test():
+def server_run():
     rospy.init_node('dynamic_reconfig')
-    s = rospy.Service(dynamic_update_service_name, DynamicUpdate, dynamic_update)
-    print "Ready to do dynamic_update."
+    dus = dynamic_update_server()
     rospy.spin()
 
 if __name__ == "__main__":
     try:
-        server_test()
+        server_run()
     except rospy.ROSInterruptException:
         print "ros exception"
         pass
