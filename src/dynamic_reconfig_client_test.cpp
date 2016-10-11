@@ -45,15 +45,39 @@ int main(int argc, char **argv) {
     // 1. Call ClearUpdateArray() at first to clean the array
     // 2. AddToUpdateArray() add configs we want to change
     // 3. ConfigUpdate() it will update all the configs
-    std::stringstream s1, s2;
-    s1 << argv[2];
-    s2 << argv[3];
-    const std::string NodeName = "/move_base/global_costmap/inflation_layer/";
     DUSC.ClearUpdateArray();
-    DUSC.AddToUpdateArray(NodeName, "enabled",
+    std::stringstream s1;
+    s1 << argv[2];
+    const std::string NodeName_Dummy = "/move_base/DummyPlannerROS/";
+    const std::string NodeName_Inflat = "/move_base/global_costmap/inflation_layer/";
+
+    // NodeName_Dummy
+    DUSC.AddToUpdateArray(NodeName_Dummy, "max_vel_x",
+      dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
+    s1.str(std::string());
+    s1 << argv[3];
+    DUSC.AddToUpdateArray(NodeName_Dummy, "min_vel_x",
+      dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
+
+    // NodeName_Inflat
+    s1.str(std::string());
+    s1 << argv[4];
+    DUSC.AddToUpdateArray(NodeName_Inflat, "enabled",
       dynamic_reconfig_common::DynamicUpdateTypeBool, static_cast<std::string>(s1.str()));
-    DUSC.AddToUpdateArray(NodeName, "inflation_radius",
-      dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s2.str()));
+    s1.str(std::string());
+    s1 << argv[5];
+    DUSC.AddToUpdateArray(NodeName_Inflat, "inflation_radius",
+      dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
+
+    // NodeName_Dummy
+    s1.str(std::string());
+    s1 << argv[6];
+    DUSC.AddToUpdateArray(NodeName_Dummy, "max_vel_y",
+      dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
+    s1.str(std::string());
+    s1 << argv[7];
+    DUSC.AddToUpdateArray(NodeName_Dummy, "min_vel_y",
+      dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
     bool rtn = DUSC.ConfigUpdate();
     ROS_INFO_STREAM("result: " << rtn);
   }
