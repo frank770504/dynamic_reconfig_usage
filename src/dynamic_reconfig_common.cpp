@@ -64,6 +64,10 @@ bool DynamicUpdateServiceClient::ConfigUpdate(
 }
 
 bool DynamicUpdateServiceClient::ConfigUpdate() {
+  if (srv.request.node_name.size() <= 0) {
+    ROS_ERROR_STREAM("Config array is empty. Do you use AddToUpdateArray() before?");
+    return false;
+  }
   return ExecuteServiceCall(3);
 }
 
