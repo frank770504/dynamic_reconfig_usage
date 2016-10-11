@@ -24,3 +24,12 @@ rosrun dynamic_reconfig dynamic_reconfig_client_test_node 0 30.0
 ### API usage
 
  - See dynamic_reconfig_client_test.cpp
+
+### Features
+
+ - Change spesific defined config
+ - Cnange many configs at a time
+
+### plan to do
+
+ - Change parameters from \*.yaml
