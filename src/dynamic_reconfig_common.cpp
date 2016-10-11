@@ -37,7 +37,6 @@ DynamicUpdateServiceClient::DynamicUpdateServiceClient(ros::NodeHandle& nh_)
 bool DynamicUpdateServiceClient::ConfigUpdate(
        std::string node_name, std::string config_name,
        std::string config_type, std::string new_config) {
-  ROS_INFO("b4 call");
   srv.request.node_name = node_name;
   srv.request.config_name = config_name;
   srv.request.config_type = config_type;
