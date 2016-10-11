@@ -1,7 +1,7 @@
 ### Execute the service pythomm first
 
-```bash
-roslaunch dynamic_reconfig dynamic_server.py
+```xml
+<node pkg="dynamic_reconfig" name="dynamic_server" type="dynamic_server.py" output="screen"/>
 ```
 
 ### Bash testing command
