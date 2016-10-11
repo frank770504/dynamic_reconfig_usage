@@ -57,19 +57,21 @@ class dynamic_update_server:
         s = rospy.Service(dynamic_update_service_name, DynamicUpdate, self.dynamic_update)
         self.req_config_name_ = "Null"
         self.req_node_name_ = "Null"
-        print "Ready to do dynamic_update."
+        rospy.loginfo( "Ready to do dynamic_update." )
     def callback(self, config):
         for key, value in config.iteritems():
             if key == self.req_config_name_:
                 rospy.loginfo( "{}{} : {}".format(self.req_node_name_, key, value) )
         #~ rospy.loginfo("Config set to {inflation_radius}, {cost_scaling_factor}, {enabled}".format(**config))
     def dynamic_update(self, req):
-        print "node_name:{}, config_name:{}, new_config:{}".format(req.node_name, req.config_name, req.new_config)
-        client = dynamic_reconfigure.client.Client(req.node_name, timeout=30, config_callback=self.callback)
-        self.req_node_name_ = req.node_name
-        self.req_config_name_ = req.config_name
-        tc = type_converter(req.config_type)
-        client.update_configuration({ req.config_name : tc.convert_(req.new_config)})
+        req_zipped = zip(req.node_name, req.config_name, req.config_type, req.new_config)
+        for node_name, config_name, config_type, new_config in req_zipped:
+            # rospy.loginfo( "node_name:{}, config_name:{}, new_config:{}".format(node_name, config_name, new_config) )
+            self.req_node_name_ = node_name
+            self.req_config_name_ = config_name
+            client = dynamic_reconfigure.client.Client(node_name, timeout=30, config_callback=self.callback)
+            tc = type_converter(config_type)
+            client.update_configuration({ config_name : tc.convert_(new_config)})
         return "ok"
 
 def server_run():

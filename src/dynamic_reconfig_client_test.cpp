@@ -11,6 +11,7 @@ int main(int argc, char **argv) {
     // in this case, we can kust give the radius and it will update that
     bool rtn = DUSC.ChangeInflationRadius(atof(argv[2]));
     ROS_INFO_STREAM("result: " << rtn);
+
   } else if (atoi(argv[1]) == 1) {
     // example: this shows how to use this api to call the dynamic reconfig service
     // After giving ConfigUpdate(), node_name, config_name, type, and new_config,
@@ -23,6 +24,7 @@ int main(int argc, char **argv) {
     bool rtn = DUSC.ConfigUpdate(NodeName, ConfigName,
       dynamic_reconfig_common::DynamicUpdateTypeFloat, str_number);
     ROS_INFO_STREAM("result: " << rtn);
+
   } else if (atoi(argv[1]) == 2) {
     // example: this shows how to use this api to call the dynamic reconfig service
     // When the type is bool, it is okay to send "True", "true", "False", "false",
@@ -34,6 +36,25 @@ int main(int argc, char **argv) {
     std::string str_number = ss.str();
     bool rtn = DUSC.ConfigUpdate(NodeName, ConfigName,
       dynamic_reconfig_common::DynamicUpdateTypeBool, str_number);
+    ROS_INFO_STREAM("result: " << rtn);
+
+  } else if (atoi(argv[1]) == 3) {
+    // example: this shows how to change multi-configs at a time
+    // The principle of this api is to add all the needed-to-change configs into
+    // arrays and do ConfigUpdate() once.
+    // 1. Call ClearUpdateArray() at first to clean the array
+    // 2. AddToUpdateArray() add configs we want to change
+    // 3. ConfigUpdate() it will update all the configs
+    std::stringstream s1, s2;
+    s1 << argv[2];
+    s2 << argv[3];
+    const std::string NodeName = "/move_base/global_costmap/inflation_layer/";
+    DUSC.ClearUpdateArray();
+    DUSC.AddToUpdateArray(NodeName, "enabled",
+      dynamic_reconfig_common::DynamicUpdateTypeBool, static_cast<std::string>(s1.str()));
+    DUSC.AddToUpdateArray(NodeName, "inflation_radius",
+      dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s2.str()));
+    bool rtn = DUSC.ConfigUpdate();
     ROS_INFO_STREAM("result: " << rtn);
   }
   return 0;

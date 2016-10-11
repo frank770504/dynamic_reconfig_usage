@@ -31,9 +31,13 @@ class DynamicUpdateServiceClient
   : public BaseServiceClient<dynamic_reconfig::DynamicUpdate> {
  public:
   explicit DynamicUpdateServiceClient(ros::NodeHandle& nh_);
+  void AddToUpdateArray(std::string node_name, std::string config_name,
+         std::string config_type, std::string new_config);
+  void ClearUpdateArray();
   bool ChangeInflationRadius(double number);
   bool ConfigUpdate(std::string node_name, std::string config_name,
          std::string config_type, std::string new_config);
+  bool ConfigUpdate();
  protected:
  private:
   static const std::string ServiceName;
