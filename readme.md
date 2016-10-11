@@ -9,7 +9,7 @@
  - test service only
 
 ```bash
-rosservice call /dynamic_update "{node_name: '/move_base/global_costmap/inflation_layer/', config_name: 'inflation_radius', config_type: 'float', new_cnofig: '40.0'}"
+rosservice call /DynamicUpdate  "{node_name: ['/move_base/global_costmap/inflation_layer/'], config_name: ['inflation_radius'], config_type: ['float'], new_config: ['40.0']}"
 ```
 
  - using self-test node
