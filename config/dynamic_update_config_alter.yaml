@@ -1,0 +1,37 @@
+dynamic_update_define:
+  scenario_list:
+   - local_planner_scenario_1
+   - local_planner_scenario_2
+   - inflation_scenario_1
+   - inflation_scenario_2
+
+local_planner_scenario_1:
+  node_name: "/move_base/DWAPlannerROS/"
+  float_configs:
+    max_vel_x: 0.60
+    min_vel_x: 0.07
+    max_vel_y: 0.4
+    min_vel_y: -0.4
+
+local_planner_scenario_2:
+  node_name: "/move_base/DWAPlannerROS/"
+  float_configs:
+    max_vel_x: 0.45
+    min_vel_x: 0.01
+    max_vel_y: 0.2
+    min_vel_y: -0.2
+    
+
+inflation_scenario_1:
+  node_name: "/move_base/global_costmap/inflation_layer/"
+  bool_configs:
+    enabled: 1
+  float_configs:
+    inflation_radius: 12.5
+
+inflation_scenario_2:
+  node_name: "/move_base/global_costmap/inflation_layer/"
+  bool_configs:
+    enabled: 0
+  float_configs:
+    inflation_radius: 40.0

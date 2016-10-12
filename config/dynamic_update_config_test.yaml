@@ -1,0 +1,26 @@
+dynamic_update_define:
+  node_list:
+   - dynamic_node1
+   - dynamic_node2
+
+dynamic_node1:
+  node_name: "/move_base/DWAPlannerROS/"
+  bool_configs:
+  int_configs:
+  float_configs:
+    max_vel_x: 0.45
+    min_vel_x: 0.01
+    max_vel_y: 0.2
+    min_vel_y: -0.2
+  string_cnofigs:
+    
+
+dynamic_node2:
+  node_name: "/move_base/global_costmap/inflation_layer/"
+  bool_configs:
+    enabled: 0
+  int_configs:
+  float_configs:
+    inflation_radius: 30.0
+  string_cnofigs:
+    
