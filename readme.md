@@ -1,15 +1,14 @@
-## Execute the service pythomm first
+### Execute the service pythomm first
+
+```xml
+<node pkg="dynamic_reconfig" name="dynamic_server" type="dynamic_server.py" output="screen"/>
+```
 
 ### Features
 
  - Change spesific defined config
  - Cnange many configs at a time
  - Change parameters from \*.yaml
-
-
-```xml
-<node pkg="dynamic_reconfig" name="dynamic_server" type="dynamic_server.py" output="screen"/>
-```
 
 ### Bash testing command
 
