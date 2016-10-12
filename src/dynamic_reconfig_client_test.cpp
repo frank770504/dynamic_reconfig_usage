@@ -48,15 +48,15 @@ int main(int argc, char **argv) {
     DUSC.ClearUpdateArray();
     std::stringstream s1;
     s1 << argv[2];
-    const std::string NodeName_Dummy = "/move_base/DummyPlannerROS/";
+    const std::string NodeName_DWA = "/move_base/DWAPlannerROS/";
     const std::string NodeName_Inflat = "/move_base/global_costmap/inflation_layer/";
 
-    // NodeName_Dummy
-    DUSC.AddToUpdateArray(NodeName_Dummy, "max_vel_x",
+    // NodeName_DWA
+    DUSC.AddToUpdateArray(NodeName_DWA, "max_vel_x",
       dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
     s1.str(std::string());
     s1 << argv[3];
-    DUSC.AddToUpdateArray(NodeName_Dummy, "min_vel_x",
+    DUSC.AddToUpdateArray(NodeName_DWA, "min_vel_x",
       dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
 
     // NodeName_Inflat
@@ -69,14 +69,14 @@ int main(int argc, char **argv) {
     DUSC.AddToUpdateArray(NodeName_Inflat, "inflation_radius",
       dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
 
-    // NodeName_Dummy
+    // NodeName_DWA
     s1.str(std::string());
     s1 << argv[6];
-    DUSC.AddToUpdateArray(NodeName_Dummy, "max_vel_y",
+    DUSC.AddToUpdateArray(NodeName_DWA, "max_vel_y",
       dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
     s1.str(std::string());
     s1 << argv[7];
-    DUSC.AddToUpdateArray(NodeName_Dummy, "min_vel_y",
+    DUSC.AddToUpdateArray(NodeName_DWA, "min_vel_y",
       dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
     bool rtn = DUSC.ConfigUpdate();
     ROS_INFO_STREAM("result: " << rtn);
