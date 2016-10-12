@@ -89,7 +89,7 @@ dynamic_update_define:
 
 ```
 
-1. I will find wll the scenario names under "dynamic_update_define/scenario_list"
+1. I will find the scenario names under "dynamic_update_define/scenario_list"
 1. Each Scenario names shows the group of parameters under the same node name
 
 ```
@@ -121,7 +121,7 @@ After setting the yaml, we have to add the parameters into rosparam server
 
 There are two ways:
  - rosparam load dynamic_update_config_alter.yaml
- - <rosparam file="dynamic_update_config_alter.yaml" command="load"/>
+ - \<rosparam file="dynamic_update_config_alter.yaml" command="load"\/>
 
 ### API usage
 
