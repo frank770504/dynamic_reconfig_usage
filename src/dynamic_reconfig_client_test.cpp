@@ -82,10 +82,22 @@ int main(int argc, char **argv) {
     ROS_INFO_STREAM("result: " << rtn);
 
   } else if (atoi(argv[1]) == 4) {
+    // example: this shows how to change multi-configs at a time by using rosparam
+    // The first thing is to set the *.yaml file and load that into rosparameter server
+    // After rosparameter server set, call UpdateScenarioList()
+    // It will save all the scenario names into a list, and each scenario
+    // presents a set of parameters under the same node name.
+    // Then, call AddScenarioList() by feeding the scenario we want
+    // The last thing is to call ConfigUpdate() to update configs
+    // Note: if needed, call ClearUpdateArray() to make sure no old parameters updated.
     std::vector<std::string> list;
     list.push_back("local_planner_scenario_1");
-    list.push_back("inflation_scenario_1");
-    DUSC.YamlParseTest(list);
+    list.push_back("inflation_scenario_2");
+    DUSC.ClearUpdateArray();
+    DUSC.UpdateScenarioList();
+    DUSC.AddScenarioList(list);
+    bool rtn = DUSC.ConfigUpdate();
+    ROS_INFO_STREAM("result: " << rtn);
 
   }
   return 0;

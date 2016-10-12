@@ -30,16 +30,19 @@ class BaseServiceClient {
 class DynamicUpdateServiceClient
   : public BaseServiceClient<dynamic_reconfig::DynamicUpdate> {
   typedef std::vector<std::string>::iterator ScenarioIter;
+  typedef XmlRpc::XmlRpcValue::iterator XmlIter;
  public:
   explicit DynamicUpdateServiceClient(ros::NodeHandle& nh_);
   void AddToUpdateArray(std::string node_name, std::string config_name,
          std::string config_type, std::string new_config);
+  void AddParamConfigs(std::string node_name, std::string scenario, std::string config_type);
+  void AddScenarioList(std::vector<std::string> enabled_list);
+  void UpdateScenarioList();
   void ClearUpdateArray();
   bool ChangeInflationRadius(double number);
   bool ConfigUpdate(std::string node_name, std::string config_name,
          std::string config_type, std::string new_config);
   bool ConfigUpdate();
-  void YamlParseTest(std::vector<std::string> enabled_list);
  protected:
  private:
   ros::NodeHandle nh_;

@@ -36,9 +36,14 @@ const std::string DynamicUpdateServiceClient::kScenarioListKey_ =
 
 DynamicUpdateServiceClient::DynamicUpdateServiceClient(ros::NodeHandle& nh_)
     : BaseServiceClient(nh_, ServiceName), nh_(nh_) {
+  UpdateScenarioList();
+}
+
+void DynamicUpdateServiceClient::UpdateScenarioList() {
+  scenario_list_.clear();
   scenario_list_.resize(0);
   if (!nh_.getParam(kScenarioListKey_, yml_params_)) {
-    ROS_ERROR_STREAM("get" << kScenarioListKey_ << "error");
+    ROS_ERROR_STREAM("get " << kScenarioListKey_ << "error");
     return;
   } else {
     // load scenario name
@@ -99,7 +104,36 @@ bool DynamicUpdateServiceClient::ChangeInflationRadius(double number) {
   return rtn;
 }
 
-void DynamicUpdateServiceClient::YamlParseTest(std::vector<std::string> enabled_list) {
+void DynamicUpdateServiceClient::AddParamConfigs(std::string node_name,
+  std::string scenario, std::string config_type) {
+    XmlRpc::XmlRpcValue _configs;
+    std::string config_type_tag;
+    std::stringstream s1;
+    if (config_type == DynamicUpdateTypeInt)
+      config_type_tag = "/int_configs";
+    else if (config_type == DynamicUpdateTypeDouble)
+      config_type_tag = "/float_configs";
+    else if (config_type == DynamicUpdateTypeFloat)
+      config_type_tag = "/float_configs";
+    else if (config_type == DynamicUpdateTypeString)
+      config_type_tag = "/string_configs";
+    else if (config_type == DynamicUpdateTypeBool)
+      config_type_tag = "/bool_configs";
+
+    if (!nh_.getParam(scenario + config_type_tag, _configs)) {
+      ROS_WARN_STREAM("no " << scenario + config_type_tag << " at all");
+    } else {
+      for (XmlIter ic = _configs.begin(); ic != _configs.end(); ++ic) {
+        ROS_INFO_STREAM("key: " << (*ic).first << ", value: " << (*ic).second);
+        s1.str(std::string());
+        s1 << (*ic).second;
+        AddToUpdateArray(node_name, (*ic).first,
+          config_type, static_cast<std::string>(s1.str()));
+      }
+    }
+  }
+
+void DynamicUpdateServiceClient::AddScenarioList(std::vector<std::string> enabled_list) {
   for (ScenarioIter it = scenario_list_.begin(); it != scenario_list_.end(); ++it) {
     for (ScenarioIter iv = enabled_list.begin(); iv != enabled_list.end(); ++iv) {
       if (*it == *iv) {
@@ -111,6 +145,12 @@ void DynamicUpdateServiceClient::YamlParseTest(std::vector<std::string> enabled_
           continue;
         }
         ROS_INFO_STREAM("node name is " << node_name);
+
+        AddParamConfigs(node_name, scenario, DynamicUpdateTypeInt);
+        AddParamConfigs(node_name, scenario, DynamicUpdateTypeDouble);
+        AddParamConfigs(node_name, scenario, DynamicUpdateTypeFloat);
+        AddParamConfigs(node_name, scenario, DynamicUpdateTypeString);
+        AddParamConfigs(node_name, scenario, DynamicUpdateTypeBool);
       }
     }
   }
