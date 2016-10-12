@@ -38,6 +38,7 @@ class DynamicUpdateServiceClient
   bool ConfigUpdate(std::string node_name, std::string config_name,
          std::string config_type, std::string new_config);
   bool ConfigUpdate();
+  void YamlParseTest();
  protected:
  private:
   static const std::string ServiceName;

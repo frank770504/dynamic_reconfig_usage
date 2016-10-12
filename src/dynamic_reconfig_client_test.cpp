@@ -80,6 +80,11 @@ int main(int argc, char **argv) {
       dynamic_reconfig_common::DynamicUpdateTypeFloat, static_cast<std::string>(s1.str()));
     bool rtn = DUSC.ConfigUpdate();
     ROS_INFO_STREAM("result: " << rtn);
+
+  } else if (atoi(argv[1]) == 4) {
+
+    DUSC.YamlParseTest();
+
   }
   return 0;
 }

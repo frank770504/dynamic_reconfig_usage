@@ -85,4 +85,8 @@ bool DynamicUpdateServiceClient::ChangeInflationRadius(double number) {
   return rtn;
 }
 
+void DynamicUpdateServiceClient::YamlParseTest() {
+  ROS_INFO_STREAM("hello_world");
+}
+
 };
