@@ -82,8 +82,10 @@ int main(int argc, char **argv) {
     ROS_INFO_STREAM("result: " << rtn);
 
   } else if (atoi(argv[1]) == 4) {
-
-    DUSC.YamlParseTest();
+    std::vector<std::string> list;
+    list.push_back("local_planner_scenario_1");
+    list.push_back("inflation_scenario_1");
+    DUSC.YamlParseTest(list);
 
   }
   return 0;

@@ -30,8 +30,22 @@ bool BaseServiceClient<Server>::ExecuteServiceCall(int re_try) {
   return true;
 }
 
+
+const std::string DynamicUpdateServiceClient::kScenarioListKey_ =
+  "dynamic_update_define/scenario_list";
+
 DynamicUpdateServiceClient::DynamicUpdateServiceClient(ros::NodeHandle& nh_)
-    : BaseServiceClient(nh_, ServiceName) {
+    : BaseServiceClient(nh_, ServiceName), nh_(nh_) {
+  scenario_list_.resize(0);
+  if (!nh_.getParam(kScenarioListKey_, yml_params_)) {
+    ROS_ERROR_STREAM("get" << kScenarioListKey_ << "error");
+    return;
+  } else {
+    // load scenario name
+    for (int i = 0; i < yml_params_.size(); i++) {
+      scenario_list_.push_back(yml_params_[i]);
+    }
+  }
 }
 
 void DynamicUpdateServiceClient::ClearUpdateArray() {
@@ -85,8 +99,22 @@ bool DynamicUpdateServiceClient::ChangeInflationRadius(double number) {
   return rtn;
 }
 
-void DynamicUpdateServiceClient::YamlParseTest() {
-  ROS_INFO_STREAM("hello_world");
+void DynamicUpdateServiceClient::YamlParseTest(std::vector<std::string> enabled_list) {
+  for (ScenarioIter it = scenario_list_.begin(); it != scenario_list_.end(); ++it) {
+    for (ScenarioIter iv = enabled_list.begin(); iv != enabled_list.end(); ++iv) {
+      if (*it == *iv) {
+        std::string scenario = *iv;
+        std::string node_name;
+        ROS_INFO_STREAM("starting change config from " << scenario);
+        if (!nh_.getParam(scenario + "/node_name", node_name)) {
+          ROS_ERROR_STREAM("get " << scenario + "/node_name" << " error");
+          continue;
+        }
+        ROS_INFO_STREAM("node name is " << node_name);
+      }
+    }
+  }
+  ROS_INFO_STREAM("");
 }
 
 };
