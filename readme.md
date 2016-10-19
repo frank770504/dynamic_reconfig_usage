@@ -121,7 +121,7 @@ After setting the yaml, we have to add the parameters into rosparam server
 
 There are two ways:
  - rosparam load dynamic_update_config_alter.yaml
- - \<rosparam file="dynamic_update_config_alter.yaml" command="load"\/>
+ - \<rosparam file="dynamic_update_config_alter.yaml" command="load"/>
 
 ### API usage
 
