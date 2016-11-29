@@ -1,0 +1,66 @@
+dynamic_update_define:
+  scenario_list:
+   - local_planner_scenario_1
+   - local_planner_scenario_2
+   - local_planner_scenario_3
+   - inflation_scenario_1
+   - inflation_scenario_2
+   - local_costmap_scenario_1
+   - local_costmap_scenario_2
+   - global_costmap_scenario_1
+   - global_costmap_scenario_2
+local_planner_scenario_1:
+  node_name: "/move_base/DWAPlannerROS/"
+  float_configs:
+    max_vel_x: 0.25
+    min_vel_x: 0.0
+    xy_goal_tolerance: 0.2
+    yaw_goal_tolerance: 0.125
+
+local_planner_scenario_2:
+  node_name: "/move_base/DWAPlannerROS/"
+  float_configs:
+    max_vel_x: 0.25
+    min_vel_x: -0.25
+
+local_planner_scenario_3:
+  node_name: "/move_base/DWAPlannerROS/"
+  float_configs:
+    xy_goal_tolerance: 0.12
+    yaw_goal_tolerance: 0.05
+    min_rot_vel: 0.0
+
+inflation_scenario_1:
+  node_name: "/move_base/global_costmap/inflation_layer/"
+  bool_configs:
+    enabled: 1
+  float_configs:
+    inflation_radius: 0.55
+
+inflation_scenario_2:
+  node_name: "/move_base/global_costmap/inflation_layer/"
+  bool_configs:
+    enabled: 1
+  float_configs:
+    inflation_radius: 0.1
+
+local_costmap_scenario_1:
+  node_name: "/move_base/local_costmap/"
+  string_configs:
+    footprint: "[[0.62, 0.55], [-0.62, 0.55], [-0.62, -0.55], [0.62, -0.55]]"
+
+local_costmap_scenario_2:
+  node_name: "/move_base/local_costmap/"
+  string_configs:
+    footprint: "[[0.0, 0.0], [-0.0, 0.0], [-0.0, -0.0], [0.0, -0.0]]"
+
+global_costmap_scenario_1:
+  node_name: "/move_base/global_costmap/"
+  string_configs:
+    footprint: "[[0.62, 0.55], [-0.62, 0.55], [-0.62, -0.55], [0.62, -0.55]]"
+
+global_costmap_scenario_2:
+  node_name: "/move_base/global_costmap/"
+  string_configs:
+    footprint: "[[0.0, 0.0], [-0.0, 0.0], [-0.0, -0.0], [0.0, -0.0]]"
+
